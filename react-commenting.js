@@ -5,13 +5,15 @@
 // Comments will describe the code on the line below the comment marks.
 
 import React, { Component } from 'react'
+
+// importing a css file for use in this component and its children
 import './App.css';
 
 class App extends Component{
   render(){
     return(
       <div>
-        {/* 1) Here: */}
+        {/* Child class being used in this component.  Will display Board here. */}
         <Board />
       </div>
     )
@@ -20,21 +22,28 @@ class App extends Component{
 
 class Board extends Component{
   constructor(){
+    // Inherit properties of Component class
     super()
-    // 2) Here:
+    // Constructor to set state of each new board.
+    // gameBoard is an array of 9 null values
+    // current player is a unicorn
+    // and there is no winner yet
     this.state = {
       gameBoard: Array(9).fill(null),
       currentPlayer: "🦄",
+      clickCount: 0, // Adding this to make code functional
       winner: null,
     }
   }
 
   gamePlay = (index) => {
-    // 3) Here:
+    // destructuring values from state
     const { gameBoard, currentPlayer, winner, clickCount } = this.state
-    // 4) Here:
+    // 4) if square is open and no winner
     if(gameBoard[index] === null && winner === null){
+      //Assign current player to index possition
       gameBoard[index] = currentPlayer
+      //update state with new gameboard, change player, and increment turn
       this.setState({
         gameBoard: gameBoard,
         currentPlayer: currentPlayer === "🦄" ? "🦆" : "🦄",
@@ -42,7 +51,7 @@ class Board extends Component{
       })
     }
     if(winner === null){
-      // 5) Here:
+      // Check to see if a win state is met
       this.winning()
     }
   }
@@ -61,8 +70,11 @@ class Board extends Component{
     ]
     winningConditions.map(value => {
       const [a, b, c] = value
-      if(gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]){
-        // 6) Here:
+      //if a, b, and c indexs of gameboard match
+      if(gameBoard[a] 
+        && gameBoard[a] === gameBoard[b] 
+        && gameBoard[a] === gameBoard[c]){
+        //Set winner to current player 
         this.setState({
           winner: currentPlayer
         })
@@ -72,14 +84,15 @@ class Board extends Component{
 
   render(){
     const { gameBoard, currentPlayer, winner } = this.state
-    // 7) Here:
+    // setting our squares to a variable that will be rendered later
+    // map returns an array
     let mappedGameBoard = gameBoard.map((value, index) => {
       return(
         <Square
           value={ value }
           index={ index }
           key={ index }
-          {/* 8) Here: */}
+          {/* This is the function that we want to call on a click */}
           gamePlay={ this.gamePlay }
         />
       )
@@ -89,17 +102,17 @@ class Board extends Component{
         <h1>Tic Tac Toe</h1>
 
           <div className="statusDiv">
-            {/* 9) Here: */}
+            {/* Destructured part of state,  the current player */}
             The Current Player is: { currentPlayer }
           </div>
 
           <div className="statusDiv">
-            {/* 10) Here: */}
+            {/* More destructure state, if there is a winner, here they are */}
             The Winner is: { winner }
           </div>
 
           <div id="outcomeBoard">
-            {/* 11) Here: */}
+            {/* display our array of squares */}
             { mappedGameBoard }
           </div>
 
@@ -111,14 +124,14 @@ class Board extends Component{
 class Square extends Component{
 
   handleSquareClick = () => {
-    // 12) Here:
+    // each click passes squares index up to gamePlay to update board state, and check for winner
     this.props.gamePlay(this.props.index)
   }
 
   render(){
     return(
       <div id="square" onClick={ this.handleSquareClick }>
-        {/* 13) Here: */}
+        {/* Renders squares index of gameBoard in parent */}
         { this.props.value }
       </div>
     )

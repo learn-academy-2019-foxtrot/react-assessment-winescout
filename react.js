@@ -5,7 +5,15 @@
 
 // 1. Write a React component that prints "I am a component!" Be sure to include all necessary imports, exports, etc.
 
+// import React, { Component } from 'react'
 
+// export default class IAmAComponent extends Component {
+//   render(){
+//     return(
+//       <h1>I am a component!</h1>
+//     )
+//   }
+// }
 
 
 
@@ -17,7 +25,14 @@ for(let i=0; i<names.length; i++){
   console.log(`${names[i]} is ${names[i].length} characters long.`)
 }
 
+const result = names.map((value)=>{
+    return `${value} is ${value.length} characters long.`
+})
 
+console.log("HERE IS THE MAP RESULT", result)
+//result will be
+//[null, null, null, null, null, null, null]
+// Why?
 
 // 3. Destructure the following variables out of state.
 
@@ -27,12 +42,27 @@ this.state = {
   dislikes: ["mirrors", "garlic", "wooden stakes"]
 }
 
+const { name, home, dislikes } = this.state 
+console.log(name, home, dislikes)
 
 
 // 4. Write a React method that would add one and update the state of the count each time the method is called.
 
-this.state = {
-  count: 0
+class Cool extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      count: 0
+    }
+  }
+
+  incrementor = ()=>{
+    this.setState({count: this.state.count++})
+  }
+  
+  render(){
+    //....
+  }
 }
 
 
@@ -41,23 +71,25 @@ this.state = {
 
 import React, { Component } from 'react';
 
-class Recipes{
+class Recipes extends Component{
   constructor(props){
     super(props)
     this.state = {
-      recipes:
+      recipes: [
         {name: 'Meatballs'},
         {name: 'Mac & Cheese'}
+      ]
     }
   }
 
   render() {
-    return(
-      let recipe = recipes.map(recipe => {
+    const {recipes} = this.state
+    const recipe = recipes.map(recipe => {
         return(
           <li key={recipe.name}>{recipe.name}</li>
         )
       })
+    return(
       <ul>
         {recipe}
       </ul>
